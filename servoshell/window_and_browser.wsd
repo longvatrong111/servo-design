@@ -1,0 +1,57 @@
+@startuml name window_and_browser
+skinparam linetype ortho
+
+' Window
+[Window]
+
+component Window {
+    ' [RenderingContext]
+}
+
+() WindowPortsMethods
+
+' MiniBrowser
+[MiniBrowser]
+
+component MiniBrowser {
+    ' [RenderingContextRc1]
+}
+
+' Running App State
+[RunningAppState]
+
+component RunningAppState {
+    [Servo]
+}
+
+component Servo {
+    ' [RenderingContextRc]
+    [UpCastedWindow]
+    [Waker]
+    [WebView]
+    [Compositor]
+    [ConstellationProxy]
+}
+
+' Relationships
+[RunningAppState] -left-> WindowPortsMethods
+Window -down- WindowPortsMethods
+
+' RenderingContext .. RenderingContextRc1
+' RenderingContext .. RenderingContextRc
+
+' Servo components
+[ConstellationSender]
+[Constellation]
+
+' WebDriver
+[WebDriverServer]
+' [ScriptHandler]
+' [InputHandler]
+
+' Relationships
+[WebDriverServer] .. [ConstellationSender]
+[ConstellationProxy] .down.> [ConstellationSender]
+[ConstellationSender] .down.> [Constellation]
+
+@enduml

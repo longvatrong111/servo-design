@@ -1,0 +1,28 @@
+@startuml class_diagram
+skinparam linetype ortho
+
+class html5ever::TreeBuilder {
+    +try_attach_declarative_shadow(tag)
+}
+
+interface html5ever::TreeSink {
+    +attach_declarative_shadow(location, parent, name, attrs) : result
+}
+
+interface html5ever::Handler {
+}
+
+class Servo::Sink {
+    +attach_declarative_shadow(location, parent, name, attrs) : result
+}
+
+class Node {
+
+}
+
+html5ever::TreeBuilder *-- html5ever::TreeSink : composite
+html5ever::TreeBuilder *-- html5ever::Handler : composite
+Servo::Sink ..|> html5ever::TreeSink : implement
+Node .. Servo::Sink
+
+@enduml

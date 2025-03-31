@@ -1,0 +1,52 @@
+@startuml class_diagram
+skinparam linetype ortho
+
+class ScriptThread{
+    +load(metadata, incomplete, can_gc)
+}
+
+class ServoParse {
+    + {static} parse_html_document(&doc, DOMStr, url, can_gc)
+    + {static} parse_html_fragment(&context_element, DOMStr, can_gc)
+}
+
+class Servo::Tokenizier {
+    + new(...)
+}
+
+class html5ever::Tokenizer {
+    + new(...)
+    + new_for_fragment(...)
+}
+
+class html5ever::TreeBuilder {
+    + step(token)
+
+    + should_attach_declarative_shadow()
+    + attach_declarative_shadow()
+
+    + <color:#red> store_template_content_html_string()
+    + <color:#red> declarative_shadow_html_string()
+    + <color:#red> set_declarative_shadow_content(DOMStr)
+}
+
+class Servo::TreeSink {
+    + attach_declarative_shadow()
+    + <color:#red> set_declarative_shadow_content(DOMStr)
+}
+
+class Element {
+    + parse_fragment(DOMStr, can_gc)
+    + attach_shadow()
+}
+
+ScriptThread *-- ServoParse: composite
+ServoParse *-- Servo::Tokenizier: composite
+Servo::Tokenizier *--- html5ever::Tokenizer: composite
+html5ever::Tokenizer *-- html5ever::TreeBuilder: composite
+html5ever::TreeBuilder *-- Servo::TreeSink
+
+Element --> ServoParse
+Servo::TreeSink --> Element
+
+@enduml

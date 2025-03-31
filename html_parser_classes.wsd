@@ -1,0 +1,43 @@
+@startuml class_diagram
+skinparam linetype ortho
+
+class Global {
+    + {static} parse_fragment<TreeSink>(sink, opts, context) -> Parse
+}
+
+class Parse {
+
+}
+
+class Tokenizier {
+}
+
+interface TokenSink {
+}
+
+class TreeBuilder {
+    +new()
+    +new_for_fragment()
+}
+
+interface TreeSink {
+}
+
+
+class Servo::TreeSink {
+}
+
+class Handler {
+}
+
+Parse *-- Tokenizier
+
+Tokenizier *-- TokenSink : composite
+
+TokenSink <|.. TreeBuilder : implement
+TreeBuilder *-- TreeSink : composite
+TreeBuilder *-- Handler : composite
+
+Servo::TreeSink ..|> TreeSink
+
+@enduml

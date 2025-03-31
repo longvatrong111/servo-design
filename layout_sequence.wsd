@@ -1,0 +1,29 @@
+@startuml
+title Handling Overflow in Servo
+
+participant BoxTree
+participant FragmentTree
+participant DisplayList
+participant WebRender
+
+BoxTree -> BoxTree: Perform Layout Calculation
+activate BoxTree
+BoxTree -> BoxTree: Check for Overflow
+deactivate BoxTree
+
+BoxTree -> FragmentTree: Create Fragments (with overflow)
+activate FragmentTree
+FragmentTree -> FragmentTree: Process Overflow\n(Add scrollbars/clipping)
+deactivate FragmentTree
+
+FragmentTree -> DisplayList: Generate Display Commands
+activate DisplayList
+DisplayList -> DisplayList: Include overflow regions
+DisplayList --> WebRender: Submit display list
+deactivate DisplayList
+
+WebRender -> WebRender: Render with\nOverflow Handling
+activate WebRender
+WebRender -> WebRender: Apply clipping/scrolling
+deactivate WebRender
+@enduml

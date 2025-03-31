@@ -1,0 +1,44 @@
+@startuml sequence_diagram
+skinparam linetype ortho
+participant html5everTokenizer
+participant html5everTreeBuilder
+participant ServoTreeSink
+participant Element
+
+group On Start Template Tag
+activate html5everTokenizer
+
+html5everTokenizer -> html5everTreeBuilder: step(start_template_token)
+activate html5everTreeBuilder
+
+html5everTreeBuilder -> html5everTreeBuilder: should_attach_declarative_shadow()
+html5everTreeBuilder -> html5everTreeBuilder: attach_declarative_shadow()
+html5everTreeBuilder -> ServoTreeSink: attach_declarative_shadow()
+activate ServoTreeSink
+ServoTreeSink -> Element: attach_shadow()
+activate Element
+
+Element --> ServoTreeSink:
+ServoTreeSink --> html5everTreeBuilder:
+html5everTreeBuilder --> html5everTokenizer:
+end
+
+group In Template Tag
+activate html5everTokenizer
+html5everTokenizer -> html5everTreeBuilder: step(token)
+activate html5everTreeBuilder
+html5everTreeBuilder -> html5everTreeBuilder: store_template_content_html_string()
+end
+
+group On End Template Tag
+html5everTokenizer -> html5everTreeBuilder: step(end_template_token)
+html5everTreeBuilder -> html5everTreeBuilder: declarative_shadow_html_string()
+html5everTreeBuilder -> ServoTreeSink: set_declarative_shadow_content(DOMStr)
+activate ServoTreeSink
+ServoTreeSink -> Element: set_declarative_shadow_content()
+activate Element
+
+Element --> ServoTreeSink:
+ServoTreeSink --> html5everTreeBuilder:
+html5everTreeBuilder --> html5everTokenizer:
+end

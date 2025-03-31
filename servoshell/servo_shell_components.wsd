@@ -1,0 +1,50 @@
+@startuml name servo_shell
+skinparam linetype ortho
+
+' EventLoop
+[EventsLoop]
+
+component EventsLoop {
+}
+
+' Waker
+[HeadedEventLoopWaker]
+
+' App
+[App]
+
+component App {
+    [Window]
+    [MiniBrowser]
+    [Waker/Embedder] as Waker
+    [RunningAppState]
+
+    ' () WindowPortsMethods
+}
+
+component RunningAppState {
+    [Servo]
+    [RunningAppStateInner]
+}
+
+Servo -- Waker
+' Window -up- WindowPortsMethods
+
+' Interfaces
+() ApplicationHandler
+() EventLoopWaker
+
+' Relationships
+[EventsLoop] -right-> ApplicationHandler
+ApplicationHandler -right- [App]
+' ApplicationHandler -right- [MiniBrowser]
+' ApplicationHandler -right- [Window]
+
+
+[EventsLoop] <-- [HeadedEventLoopWaker] : send events
+[HeadedEventLoopWaker] -right- EventLoopWaker
+EventLoopWaker <-left- [Waker] : wake
+
+
+
+@enduml

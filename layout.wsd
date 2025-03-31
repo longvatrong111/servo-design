@@ -1,0 +1,17 @@
+@startuml class_diagram
+skinparam linetype ortho
+
+class BoxTree {
+    construct()
+}
+
+class BoxFragment {
+    +BaseFragment base
+    scrollable_overflow_for_parent()
+}
+
+class BaseFragment {
+    // ...properties and methods...
+}
+
+@enduml

@@ -1,0 +1,6 @@
+@startuml oldflow
+start
+:Insert htlm element for the token;
+:Steps 1-5 in spec;
+stop
+@enduml

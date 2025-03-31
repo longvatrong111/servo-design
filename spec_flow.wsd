@@ -1,0 +1,17 @@
+@startuml oldflow
+start
+:Steps 1-5 in spec;
+
+if (1. DSD is enabled?) then (yes)
+  if (2. Not in a shadow host?) then (yes)
+    :3. Attach shadow;
+    if (4. Attach shadow successfully?) then (yes)
+      :OK;
+      stop
+    endif
+  endif
+endif
+
+:Insert htlm element for the token;
+stop
+@enduml

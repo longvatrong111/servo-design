@@ -1,0 +1,28 @@
+@startuml name webdriver
+skinparam linetype ortho
+
+[WebDriverServer]
+
+component WebDriverServer {
+    ' [BrowsingContext]
+}
+
+' [ConstellationSender]
+
+[Constellation]
+
+[Compositor]
+[WebView]
+
+[ScriptThread]
+
+[WebDriverServer] --> [Constellation] : CommandMsg
+[WebDriverServer] --> [Constellation] : ScriptCommand
+[WebDriverServer] --> [Constellation] : InputActionCommand
+
+[Constellation] --> [ScriptThread] : ScriptCommand
+
+[Constellation] --> [Compositor] : InputActionCommand
+[Compositor] --> [WebView] : InputActionCommand
+
+@enduml
